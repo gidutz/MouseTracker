@@ -8,6 +8,7 @@ import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -31,10 +32,15 @@ import org.jnativehook.NativeHookException;
  *
  */
 public class Launch {
-	public static final long EXCEUTION_TIME = 3L;
+	public static final long EXCEUTION_TIME = 1L;
 	public static final String OS = System.getProperty("os.name");
+	static String pathToSave;
 
 	public static void addComponentsToPane(Container pane) {
+
+		/*
+		 * Determine path to save file
+		 */
 
 		if (!(pane.getLayout() instanceof BorderLayout)) {
 			pane.add(new JLabel("Container doesn't use BorderLayout!"));
@@ -46,15 +52,17 @@ public class Launch {
 
 		facebook_btn.setPreferredSize(new Dimension(200, 100));
 		ynet_btn.setPreferredSize(new Dimension(200, 100));
-
 		pane.add(facebook_btn, BorderLayout.PAGE_START);
 		pane.add(ynet_btn, BorderLayout.CENTER);
-
 		facebook_btn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
 					openWebpage(new URI("http://www.facebook.com"));
+					pathToSave = pathToSave + "facebook/";
+					ValidateFolder();
+					startTrackingMouse();
+
 				} catch (URISyntaxException e1) {
 					e1.printStackTrace();
 				} finally {
@@ -70,7 +78,9 @@ public class Launch {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					openWebpage(new URI("http://www.ynet.co.il"));
-
+					pathToSave = pathToSave + "ynet/";
+					ValidateFolder();
+					startTrackingMouse();
 				} catch (URISyntaxException e1) {
 					e1.printStackTrace();
 				} finally {
@@ -101,6 +111,15 @@ public class Launch {
 	}
 
 	public static void main(String[] args) {
+		//
+		if (OS.startsWith("Windows")) {
+			pathToSave = "C:/Temp/MouseRecorder/";
+		} else if (OS.startsWith("Mac")) {
+			pathToSave = System.getProperty("user.home")
+					+ "/Temp/MouseRecorder/";
+
+		}
+
 		/* Use an appropriate Look and Feel */
 		try {
 			// UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -120,7 +139,6 @@ public class Launch {
 			}
 		});
 
-	
 	}
 
 	/**
@@ -140,6 +158,7 @@ public class Launch {
 				e.printStackTrace();
 			}
 		}
+
 		try {
 
 			Clip openingSound = AudioSystem.getClip();
@@ -156,6 +175,7 @@ public class Launch {
 			EndingTimer exitApp = new EndingTimer();
 			timer.schedule(exitApp, new Date(System.currentTimeMillis()
 					+ EXCEUTION_TIME * 1000));
+
 			try {
 				GlobalScreen.registerNativeHook();
 			} catch (NativeHookException ex) {
@@ -166,13 +186,30 @@ public class Launch {
 				System.exit(1);
 			}
 
-			// Construct the example object.
-			GlobalMouseListenerExample example = new GlobalMouseListenerExample();
-
-			// Add the appropriate listeners for the example object.
-			GlobalScreen.getInstance().addNativeMouseListener(example);
-			GlobalScreen.getInstance().addNativeMouseMotionListener(example);
 		}
+	}
+
+	private static void ValidateFolder() {
+
+		File theDir = new File(pathToSave);
+
+		// if the directory does not exist, create it
+		if (!theDir.exists()) {
+			System.out.println("creating directory: " + pathToSave);
+			boolean result = false;
+
+			try {
+				result = theDir.mkdirs();
+
+			} catch (SecurityException se) {
+				se.printStackTrace();
+			}
+			if (result) {
+				System.out.println("DIR created");
+				System.out.println(theDir.getAbsolutePath());
+			}
+		}
+
 	}
 
 	public static void openWebpage(URL url) {
@@ -181,6 +218,16 @@ public class Launch {
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static void startTrackingMouse() {
+		// Construct the example object.
+		GlobalMouseListenerExample example = new GlobalMouseListenerExample(
+				pathToSave);
+
+		// Add the appropriate listeners for the example object.
+		GlobalScreen.getInstance().addNativeMouseListener(example);
+		GlobalScreen.getInstance().addNativeMouseMotionListener(example);
 	}
 
 }
