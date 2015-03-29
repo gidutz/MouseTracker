@@ -34,9 +34,9 @@ import org.jnativehook.NativeHookException;
 public class Launch {
 	/**
 	 * Sets the run time of the capture, starting when a button is clicked
-	 * Default value set to 180
+	 * Default value set to 90
 	 */
-	public static final long CAPTURE_TIME = 180L;
+	public static final long CAPTURE_TIME = 90L;
 
 	/**
 	 * determines the OS type for File system settings
@@ -51,7 +51,7 @@ public class Launch {
 	/**
 	 * Tracker object
 	 */
-	static GlobalMouseListenerExample tracker;
+	static MouseMoveListener tracker;
 
 	/**
 	 * Adds components to the applet
@@ -244,11 +244,13 @@ public class Launch {
 
 	public static void startTrackingMouse() {
 		// Construct the example object.
-		tracker = new GlobalMouseListenerExample(pathToSave);
+		tracker = new MouseMoveListener(pathToSave);
 
 		// Add the appropriate listeners for the example object.
 		GlobalScreen.getInstance().addNativeMouseListener(tracker);
 		GlobalScreen.getInstance().addNativeMouseMotionListener(tracker);
+       GlobalScreen.getInstance().addNativeMouseWheelListener(tracker);
+
 	}
 
 }
