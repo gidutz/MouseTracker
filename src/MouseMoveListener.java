@@ -9,7 +9,8 @@ import org.jnativehook.mouse.NativeMouseInputListener;
 import org.jnativehook.mouse.NativeMouseWheelEvent;
 import org.jnativehook.mouse.NativeMouseWheelListener;
 
-public class MouseMoveListener implements NativeMouseInputListener, NativeMouseWheelListener {
+public class MouseMoveListener implements NativeMouseInputListener,
+		NativeMouseWheelListener {
 	PrintWriter out;
 
 	public MouseMoveListener(String path) {
@@ -28,42 +29,42 @@ public class MouseMoveListener implements NativeMouseInputListener, NativeMouseW
 	}
 
 	public void nativeMouseClicked(NativeMouseEvent e) {
-		printAction(new String[] { "Mouse Clicked", "" + e.getClickCount() });
+		printAction(new String[] { "" + e.getWhen(), "Mouse Clicked",
+				"" + e.getClickCount() });
 
 	}
 
 	public void nativeMousePressed(NativeMouseEvent e) {
-		printAction(new String[] { "Mouse Pressed", "" + e.getButton() });
+		printAction(new String[] { "" + e.getWhen(), "Mouse Pressed",
+				"" + e.getButton() });
 
 	}
 
 	public void nativeMouseReleased(NativeMouseEvent e) {
-		printAction(new String[] { "Mouse Released", "" + e.getButton() });
+		printAction(new String[] { "" + e.getWhen(), "Mouse Released",
+				"" + e.getButton() });
 
 	}
 
 	public void nativeMouseMoved(NativeMouseEvent e) {
-		printAction(new String[] { "Mouse Moved", "" + e.getX(), "" + e.getY() });
+		printAction(new String[] { "" + e.getWhen(), "Mouse Moved",
+				"" + e.getX(), "" + e.getY() });
 
 	}
 
 	public void nativeMouseDragged(NativeMouseEvent e) {
-		printAction(new String[] { "Mouse Dragged", "" + e.getX(),
-				"" + e.getY() });
+		printAction(new String[] { "" + e.getWhen(), "Mouse Dragged",
+				"" + e.getX(), "" + e.getY(), });
 
 	}
 
 	public void nativeMouseWheelMoved(NativeMouseWheelEvent e) {
-		printAction(new String[] { "Mouse Wheel Moved",
-				"" + e.getWheelRotation() });
+		printAction(new String[] { "" + e.getWhen(), "Mouse Wheel Moved",
+				"" + e.getWheelRotation(), "" + e.getScrollAmount() });
 	}
 
 	public void printAction(String[] params) {
-
-		String actionTime = "" + System.currentTimeMillis();
 		StringBuilder sb = new StringBuilder();
-		sb.append(actionTime);
-		sb.append(",");
 		for (String s : params) {
 			sb.append(s);
 			sb.append(",");
