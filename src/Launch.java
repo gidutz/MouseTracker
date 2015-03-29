@@ -32,10 +32,32 @@ import org.jnativehook.NativeHookException;
  *
  */
 public class Launch {
-	public static final long EXCEUTION_TIME = 1L;
-	public static final String OS = System.getProperty("os.name");
+	/**
+	 * Sets the run time of the capture, starting when a button is clicked
+	 * Default value set to 180
+	 */
+	public static final long CAPTURE_TIME = 180L;
+
+	/**
+	 * determines the OS type for File system settings
+	 */
+	private static final String OS = System.getProperty("os.name");
+
+	/**
+	 * path to save the data
+	 */
 	static String pathToSave;
 
+	/**
+	 * Tracker object
+	 */
+	static GlobalMouseListenerExample tracker;
+
+	/**
+	 * Adds components to the applet
+	 * 
+	 * @param pane
+	 */
 	public static void addComponentsToPane(Container pane) {
 
 		/*
@@ -111,7 +133,7 @@ public class Launch {
 	}
 
 	public static void main(String[] args) {
-		//
+		// Determines the OS
 		if (OS.startsWith("Windows")) {
 			pathToSave = "C:/Temp/MouseRecorder/";
 		} else if (OS.startsWith("Mac")) {
@@ -166,16 +188,16 @@ public class Launch {
 					.getAudioInputStream(Launch.class.getResource("ding.wav"));
 			openingSound.open(inputStream);
 			openingSound.start();
-
-			Thread.sleep((long) (3 * 1000));
+			Thread.sleep((long) (3 * 1000));//wait 3 seconds for page to load
+			
 		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
+		} finally {// setting ending timer
 			Timer timer = new Timer();
 			EndingTimer exitApp = new EndingTimer();
 			timer.schedule(exitApp, new Date(System.currentTimeMillis()
-					+ EXCEUTION_TIME * 1000));
+					+ CAPTURE_TIME * 1000));
 
+			// starts tracking mouse moves
 			try {
 				GlobalScreen.registerNativeHook();
 			} catch (NativeHookException ex) {
@@ -222,12 +244,11 @@ public class Launch {
 
 	public static void startTrackingMouse() {
 		// Construct the example object.
-		GlobalMouseListenerExample example = new GlobalMouseListenerExample(
-				pathToSave);
+		tracker = new GlobalMouseListenerExample(pathToSave);
 
 		// Add the appropriate listeners for the example object.
-		GlobalScreen.getInstance().addNativeMouseListener(example);
-		GlobalScreen.getInstance().addNativeMouseMotionListener(example);
+		GlobalScreen.getInstance().addNativeMouseListener(tracker);
+		GlobalScreen.getInstance().addNativeMouseMotionListener(tracker);
 	}
 
 }

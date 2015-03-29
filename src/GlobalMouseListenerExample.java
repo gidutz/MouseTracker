@@ -20,39 +20,54 @@ public class GlobalMouseListenerExample implements NativeMouseInputListener {
 	}
 
 	public void nativeMouseClicked(NativeMouseEvent e) {
-		out.println("Mosue Clicked: " + e.getClickCount());
-		out.flush();
+		printAction(new String[] { "Mosue Clicked", "" + e.getClickCount() });
 
 	}
 
 	public void nativeMousePressed(NativeMouseEvent e) {
-		out.println("Mosue Pressed: " + e.getButton());
-		out.flush();
+		printAction(new String[] { "Mosue Pressed", "" + e.getButton() });
 
 	}
 
 	public void nativeMouseReleased(NativeMouseEvent e) {
-		out.println("Mosue Released: " + e.getButton());
-		out.flush();
+		printAction(new String[] { "Mosue Released", "" + e.getButton() });
 
 	}
 
 	public void nativeMouseMoved(NativeMouseEvent e) {
-		out.println("Mosue Moved: " + e.getX() + ", " + e.getY());
-		out.flush();
+		printAction(new String[] { "Mosue Moved", "" + e.getX(), "" + e.getY() });
 
 	}
 
 	public void nativeMouseDragged(NativeMouseEvent e) {
-		out.println("Mosue Dragged: " + e.getX() + ", " + e.getY() + " "
-				+ System.currentTimeMillis());
-		out.flush();
+		printAction(new String[] { "Mosue Dragged", "" + e.getX(),
+				"" + e.getY() });
 
 	}
 
 	public void nativeMouseWheelMoved(NativeMouseWheelEvent e) {
-		out.println("Mosue Wheel Moved: " + e.getWheelRotation());
+		printAction(new String[] { "Mosue Wheel Moved",
+				"" + e.getWheelRotation() });
+	}
+
+	public void printAction(String[] params) {
+
+		String actionTime = "" + System.currentTimeMillis();
+		StringBuilder sb = new StringBuilder();
+		sb.append(actionTime);
+		sb.append(",");
+		for (String s : params) {
+			sb.append(s);
+			sb.append(",");
+		}
+		sb.setLength(sb.length() - 1);
+		out.println(sb.toString());
+	}
+
+	public void terminate() {
+
 		out.flush();
+		out.close();
 	}
 
 }

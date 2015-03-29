@@ -6,18 +6,18 @@ import javax.sound.sampled.Clip;
 
 /**
  * Plays a sound and shuts down the app
+ * 
  * @author gidutz
  *
  */
-public class EndingTimer extends TimerTask{
-	
+public class EndingTimer extends TimerTask {
+
 	public void run() {
 		try {
 
 			Clip clip = AudioSystem.getClip();
 			AudioInputStream inputStream = AudioSystem
-					.getAudioInputStream(getClass().getResource(
-							"ding.wav"));
+					.getAudioInputStream(getClass().getResource("ding.wav"));
 			clip.open(inputStream);
 			clip.start();
 			Thread.sleep((long) (1.4 * 1000));
@@ -25,6 +25,7 @@ public class EndingTimer extends TimerTask{
 			e.printStackTrace();
 		}
 		System.out.println("Soutdown schedueled");
+		Launch.tracker.terminate();
 		System.exit(0);
 	}
 
