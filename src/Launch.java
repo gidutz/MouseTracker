@@ -100,24 +100,9 @@ public class Launch {
 
 		// if the directory does not exist, create it
 		if (!theDir.exists()) {
-			System.out.println("creating directory: " + path);
-			boolean result = false;
+			System.err.println("Folder Does not exsist");
+			System.exit(21424);
 
-			try {
-				result = theDir.mkdirs();
-
-			} catch (SecurityException se) {
-				se.printStackTrace();
-			}
-			if (result) {
-				System.out.println("DIR created");
-				System.out.println(theDir.getAbsolutePath());
-				return theDir.getAbsolutePath();
-
-			} else {
-				return null;
-
-			}
 		}
 		return theDir.getAbsolutePath();
 
@@ -179,7 +164,7 @@ public class Launch {
 			System.err.println("could not create directory");
 			System.exit(3);
 
-		}else if (!args[2].matches("\\d+")){
+		} else if (!args[2].matches("\\d+")) {
 			System.err.println("3rd argument must be an integer");
 			System.exit(3);
 		}
