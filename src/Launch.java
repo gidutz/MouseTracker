@@ -99,7 +99,7 @@ public class Launch {
 		File theDir = new File(path);
 
 		// if the directory does not exist, create it
-		if (!theDir.exists()) {
+		if (!theDir.getParentFile().exists()) {
 			System.err.println("Folder Does not exsist");
 			System.exit(21424);
 
