@@ -18,9 +18,9 @@ public class MouseMoveListener implements NativeMouseInputListener,
 		double width = screenSize.getWidth();
 		double height = screenSize.getHeight();
 
-		String fileName = "/" + System.currentTimeMillis() + ".txt";
+		//String fileName = "/" + System.currentTimeMillis() + ".txt";
 		try {
-			out = new PrintWriter(new File(path + fileName));
+			out = new PrintWriter(new File(path ));
 			out.println("Screen Resolution, " + width + "," + height);
 		} catch (FileNotFoundException e) {
 			System.exit(1);
