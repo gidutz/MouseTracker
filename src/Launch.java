@@ -79,6 +79,7 @@ public class Launch {
 			EndingTimer exitApp = new EndingTimer();
 			timer.schedule(exitApp, new Date(System.currentTimeMillis()
 					+ CAPTURE_TIME * 1000));
+			System.out.println("executrion set for : " + CAPTURE_TIME);
 
 			// starts tracking mouse moves
 			try {
@@ -137,7 +138,9 @@ public class Launch {
 		} else if (args[0].equalsIgnoreCase("ynet")) {
 			url = "http://ynet.co.il";
 		}
-
+		pathToSave = ValidateFolder(args[1]);
+		CAPTURE_TIME = Integer.parseInt(args[2]);
+		
 		try {
 			openWebpage(new URI(url));
 		} catch (URISyntaxException e) {
@@ -145,8 +148,7 @@ public class Launch {
 			System.exit(1);
 		}
 
-		pathToSave = ValidateFolder(args[1]);
-		CAPTURE_TIME = Integer.parseInt(args[2]);
+	
 		startTrackingMouse();
 
 	}
