@@ -71,6 +71,7 @@ public class MouseMoveListener implements NativeMouseInputListener,
 		}
 		sb.setLength(sb.length() - 1);
 		out.println(sb.toString());
+		out.flush();
 	}
 
 	public void terminate() {
